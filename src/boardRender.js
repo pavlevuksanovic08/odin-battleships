@@ -1,5 +1,5 @@
 import DomUtils from "./domUtils";
-
+import { Ship } from "./ship";
 
 export class BoardRender {
 
@@ -31,8 +31,12 @@ export class BoardRender {
         for (let i = 0; i < table.rows.length; i++) {
             for (let j = 0; j < table.rows[i].cells.length; j++) {
                 const cell = table.rows[i].cells[j];
-                cell.addEventListener("click", () => {
-                    gameboard.receiveAttack(Number(cell.dataset.x), Number(cell.dataset.y));
+                cell.addEventListener("click", (event) => {
+                    let x = Number(cell.dataset.x);
+                    let y = Number(cell.dataset.y);
+                    gameboard.receiveAttack(x, y);
+                    if (gameboard.board[x][y] instanceof Ship) event.target.className = "hit";
+                    else event.target.className = "miss";
                 })
             }
         }

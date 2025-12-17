@@ -29,13 +29,14 @@ describe("BoardRender class", () => {
             table.rows[3].cells[5].click();
 
             expect(gameboard.board[3][5]).toBe("miss");
+            expect(table.rows[3].cells[5].className).toBe("miss");
 
             gameboard.placeShip([7, 7], [7, 7]);
 
             table.rows[7].cells[7].click();
 
             expect(gameboard.board[7][7].hits).toBe(1);
-
+            expect(table.rows[7].cells[7].className).toBe("hit");
             
         })
     })
