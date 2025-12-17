@@ -21,6 +21,10 @@ export class BoardRender {
             DomUtils.appendToParent(table, row);
         }
         DomUtils.appendToParent(placeholder, table);
+
+        return table;
     }
+
+
 
 }
