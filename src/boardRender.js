@@ -6,6 +6,8 @@ export class BoardRender {
     static load(gameboard, placeholder) {
         const table = BoardRender.#createTable(gameboard, placeholder);
 
+        BoardRender.#addEventListeners(gameboard, table);
+
         return table;
     }
 
@@ -25,6 +27,16 @@ export class BoardRender {
         return table;
     }
 
+    static #addEventListeners(gameboard, table) {
+        for (let i = 0; i < table.rows.length; i++) {
+            for (let j = 0; j < table.rows[i].cells.length; j++) {
+                const cell = table.rows[i].cells[j];
+                cell.addEventListener("click", () => {
+                    gameboard.receiveAttack(Number(cell.dataset.x), Number(cell.dataset.y));
+                })
+            }
+        }
+    }
 
 
 }
