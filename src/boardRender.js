@@ -24,4 +24,22 @@ export class BoardRender {
 
 		return table;
 	}
+
+	static showWinner(player1, player2) {
+		const winner = player1.gameboard.areShipsSunk() ? player2 : player1;
+		const loser = player1.gameboard.areShipsSunk() ? player1 : player2;
+		winner.score += 1;
+		const winnerDiv = DomUtils.createElement("div", {
+			className: "winner-message",
+		});
+		const message = DomUtils.createElement("h2", {
+			innerText: `Congratulations ${winner.name}, you have won!`
+		});
+		const score = DomUtils.createElement("p", {
+			innerText: `Score: ${winner.name} ${winner.score} - ${loser.name} ${loser.score}`
+		});
+		DomUtils.appendToParent(winnerDiv, score);
+		DomUtils.appendToParent(winnerDiv, message);
+		DomUtils.appendToParent(document.body, winnerDiv);
+	}
 }
