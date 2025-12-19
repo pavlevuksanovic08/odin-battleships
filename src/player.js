@@ -2,10 +2,12 @@ import { Gameboard } from "./gameboard";
 import { Ship } from "./ship";
 
 export class Player {
-  constructor() {
+  constructor(name) {
     if (new.target === Player) {
         throw new Error("Player is abstract and cannot be instantiated directly");
     }
+    this.name = name;
+    this.score = 0;
     this.gameboard = new Gameboard();
   }
   async attack() {
@@ -14,6 +16,9 @@ export class Player {
 }
 
 export class RealPlayer extends Player {
+  constructor(name) {
+    super(name);
+  }
   async attack(gameboard, table) {
     const pos = await this.#waitForClick(table);
     const x = Number(pos.x);
@@ -40,8 +45,8 @@ export class RealPlayer extends Player {
 }
 
 export class ComputerPlayer extends Player {
-    constructor() {
-        super();
+    constructor(name) {
+        super(name);
         this.previousAttacks = new Set();
     }
     attack(gameboard, table) {
