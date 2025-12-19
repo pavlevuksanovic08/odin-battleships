@@ -84,4 +84,41 @@ export class Gameboard {
         }
         return true;
     }
+
+    randomPlaceShips(shipLengths) {
+        for (let length of shipLengths) {
+            let placed = false;
+            while (!placed) {
+                let isHorizontal = Math.random() < 0.5;
+                let startX = Math.floor(Math.random() * 10);
+                let startY = Math.floor(Math.random() * 10);
+                let endX = isHorizontal ? startX : startX + length - 1;
+                let endY = isHorizontal ? startY + length - 1 : startY;
+
+                if (endX < 10 && endY < 10) {
+                    let canPlace = true;
+                    if (isHorizontal) {
+                        for (let i = startY; i <= endY; i++) {
+                            if (this.board[startX][i] !== null) {
+                                canPlace = false;
+                                break;
+                            }
+                        }
+                    } else {
+                        for (let i = startX; i <= endX; i++) {
+                            if (this.board[i][startY] !== null) {
+                                canPlace = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (canPlace) {
+                        this.placeShip([startX, startY], [endX, endY]);
+                        placed = true;
+                    }
+                }
+            }
+        }
+    }  
 }
