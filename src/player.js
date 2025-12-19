@@ -39,4 +39,22 @@ export class RealPlayer extends Player {
   }
 }
 
-export class ComputerPlayer extends Player {}
+export class ComputerPlayer extends Player {
+    constructor() {
+        super();
+        this.previousAttacks = new Set();
+    }
+    attack(gameboard, table) {
+        let x = Math.floor(Math.random() * 10);
+        let y = Math.floor(Math.random() * 10);
+        while (this.previousAttacks.has(`${x},${y}`)) {
+            x = Math.floor(Math.random() * 10);
+            y = Math.floor(Math.random() * 10);
+        }
+        this.previousAttacks.add(`${x},${y}`);
+        gameboard.receiveAttack(x, y);
+        if (gameboard.board[x][y] instanceof Ship)
+            table.rows[x].cells[y].className = "hit";
+        else table.rows[x].cells[y].className = "miss";
+    }
+}

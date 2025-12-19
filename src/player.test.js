@@ -76,4 +76,49 @@ describe("ComputerPlayer class", () => {
 		const player = new ComputerPlayer();
 		expect(player).toBeDefined();
 	});
+
+    test("attack function", () => {
+        const player = new ComputerPlayer();
+        const gameboard = new Gameboard();
+        const placeholder = DomUtils.createElement("div");
+        const table = BoardRender.load(gameboard, placeholder);
+
+        jest.spyOn(Math, "random")
+            .mockReturnValueOnce(0.3) // x = 3
+            .mockReturnValueOnce(0.5); // y = 5 
+
+        player.attack(gameboard, table);
+
+        expect(gameboard.board[3][5]).toBe("miss");
+        expect(table.rows[3].cells[5].className).toBe("miss");
+    });
+
+    test("same place can't be attacked twice", () => {
+        const player = new ComputerPlayer();
+        const gameboard = new Gameboard();
+        const placeholder = DomUtils.createElement("div");
+        const table = BoardRender.load(gameboard, placeholder);
+
+        // FIRST ATTACK
+        jest.spyOn(Math, "random")
+            .mockReturnValueOnce(0.3) // x = 3
+            .mockReturnValueOnce(0.5); // y = 5
+
+        player.attack(gameboard, table);
+
+        expect(gameboard.board[3][5]).toBe("miss");
+        expect(table.rows[3].cells[5].className).toBe("miss");
+
+        // SECOND ATTACK
+        jest.spyOn(Math, "random")
+            .mockReturnValueOnce(0.3) // x = 3 (already attacked)
+            .mockReturnValueOnce(0.5) // y = 5 (already attacked)
+            .mockReturnValueOnce(0.6) // x = 6
+            .mockReturnValueOnce(0.4); // y = 4
+
+        player.attack(gameboard, table);
+
+        expect(gameboard.board[6][4]).toBe("miss");
+        expect(table.rows[6].cells[4].className).toBe("miss");
+    });
 });
